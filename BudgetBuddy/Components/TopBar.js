@@ -1,17 +1,26 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-const TopBar = ({ username = 'User', onProfilePress = () => {} }) => {
+const TopBar = ({ username = 'User', onProfilePress = () => {}, onSettingsPress = () => {} }) => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <TouchableOpacity onPress={onProfilePress}>
-          <Image
-            source={require('../assets/MESSI.png')}
-            style={styles.avatar}
-          />
+        {/* Left side: Avatar + Greeting */}
+        <View style={styles.leftSection}>
+          <TouchableOpacity onPress={onProfilePress}>
+            <Image
+              source={require('../assets/MESSI.png')}
+              style={styles.avatar}
+            />
+          </TouchableOpacity>
+          <Text style={styles.greeting}>Hello, {username}</Text>
+        </View>
+
+        {/* Right side: Settings icon */}
+        <TouchableOpacity onPress={onSettingsPress}>
+          <Icon name="settings-outline" size={24} color="black" style={styles.settingsIcon} />
         </TouchableOpacity>
-        <Text style={styles.greeting}>Hello, {username}</Text>
       </View>
     </View>
   );
@@ -22,15 +31,11 @@ export default TopBar;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#ffffff',
-    paddingVertical: 12,
+    paddingVertical: 19,
     paddingHorizontal: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#e0e0e0',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
+    elevation: 1,
     position: 'absolute',
     top: 0,
     left: 0,
@@ -39,8 +44,13 @@ const styles = StyleSheet.create({
   },
   content: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 8,
+  },
+  leftSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 13,
   },
   greeting: {
     fontSize: 18,
@@ -54,4 +64,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#e0e0e0',
   },
+  settingsIcon: {
+    marginRight: 15,
+  }
 });
