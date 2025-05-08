@@ -3,17 +3,16 @@ import { View, StyleSheet, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const DailyTip = () => {
-    var generatedTip = "try the 50/20/10 rule";
+    const tip = "The 50/30/20 budgeting rule: 50% for needs, 30% for wants, and 20% for savings.";
     return(
-        <View style={styles.container}>
-            <View style={styles.TipBox}>
+        <View style={styles.centeredContent}>
+            <Text style={styles.title}>Daily Tip</Text>
+            <View style={styles.tipBox}>
                 <View style={styles.titleContainer}>
-                    <Icon name="bulb-outline" size={25} color="black" />
-                    <Text style={styles.TipTitle}>Daily Tip</Text>
+                    <Icon name="bulb-outline" size={24} color="#333" />
+                    <Text style={styles.tipTitle}>Smart Money Tip</Text>
                 </View>
-                <Text style={styles.GenTip}>
-                    {generatedTip}
-                </Text>
+                <Text style={styles.tipText}>{tip}</Text>
             </View>
         </View>
     )
@@ -22,31 +21,44 @@ const DailyTip = () => {
 export default DailyTip;
 
 const styles = StyleSheet.create({
-    container: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 20,
+    centeredContent: {
+        width: '100%',
+        maxWidth: 400,
+        alignSelf: 'center',
+        marginTop: 100,
+        marginBottom: 19,
     },
-    TipBox: {
-        width: 300,
-        padding: 15,
-        borderWidth: 1,
-        borderColor: '#eee',
-        borderRadius: 10,
-        backgroundColor: '#eee',
+    title: {
+        fontSize: 18,
+        fontWeight: '700',
+        color: '#222',
+        marginBottom: 12,
+        marginLeft: 4,
+    },
+    tipBox: {
+        padding: 13,
+        backgroundColor: '#f4f4f6',
+        borderRadius: 12,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+        elevation: 2,
     },
     titleContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 8,
+        marginBottom: 12,
     },
-    TipTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginLeft: 8, // Space between icon and text
+    tipTitle: {
+        fontSize: 20,
+        fontWeight: '700',
+        color: '#333',
+        marginLeft: 8,
     },
-    GenTip: {
+    tipText: {
         fontSize: 16,
-        marginLeft: 33, // Aligns with text (icon width + margin)
+        color: '#666',
+        lineHeight: 22,
     }
 })
