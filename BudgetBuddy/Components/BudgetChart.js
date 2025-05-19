@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
 import { PieChart } from 'react-native-gifted-charts';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -16,6 +15,7 @@ const BudgetChart = () => {
       <View style={styles.chartCard}>
         <PieChart
           data={spendingData}
+          
           donut
           showText
           textColor="#333"
@@ -153,6 +153,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 44,
     marginBottom: 10,
+    zIndex: 1,
   },
   updateButtonText: {
     color: '#fff',

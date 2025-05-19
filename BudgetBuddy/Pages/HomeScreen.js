@@ -1,4 +1,3 @@
-import React from 'react';
 import { ScrollView, View, StyleSheet, SafeAreaView } from 'react-native';
 import DailyTip from '../Components/DailyTip';
 import BudgetChart from '../Components/BudgetChart';
@@ -9,8 +8,8 @@ const HomeScreen = () => {
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
         <View style={styles.container}>
           <TopBar/>
-          <DailyTip />
-          <BudgetChart />
+          <DailyTip/>
+          <BudgetChart/>
         </View>
       </ScrollView>
     </SafeAreaView>

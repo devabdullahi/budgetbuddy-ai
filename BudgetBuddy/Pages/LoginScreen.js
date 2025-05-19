@@ -2,7 +2,10 @@ import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 
-const LoginScreen = () => {
+
+const LoginScreen = ({navigation}) => {
+  const login = () =>navigation.navigate('Home');
+
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -19,7 +22,7 @@ const LoginScreen = () => {
         <Text style={styles.SignupText}>Signup</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.LoginBox}>
+      <TouchableOpacity style={styles.LoginBox} onPress={login}>
         <Text style={styles.LoginText}>Login</Text>
       </TouchableOpacity>
 
