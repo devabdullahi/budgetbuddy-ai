@@ -4,7 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 
 
 const LoginScreen = ({navigation}) => {
-  const login = () =>navigation.navigate('Home');
+  const login = () => navigation.navigate('Home');
 
   return (
     <View style={styles.container}>

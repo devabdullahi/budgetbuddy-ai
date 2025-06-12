@@ -1,4 +1,3 @@
-import React from "react";
 import { View, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
@@ -18,9 +17,10 @@ const NavPage = () => {
             component={LoginScreen}
             options={{ headerShown: false }}
           />
-          <Screen name="Home" component={HomeScreen} />
-
-          <Screen name="EditEx" component={EditExpenses}  options={{ headerShown: false }} />
+          <Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
+          <Screen name="EditEx" 
+          component={EditExpenses}
+           />
         </Navigator>
       </NavigationContainer>
     </SafeAreaView>

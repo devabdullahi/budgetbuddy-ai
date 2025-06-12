@@ -43,6 +43,8 @@ const EditExpenses = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+
+      
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.centeredContent}>
           <Text style={styles.title}>Edit Expenses</Text>
