@@ -9,12 +9,17 @@ const EditExpenses = () => {
     { id: 2, value: 1200, color: '#50E3C2', text: 'Rent', icon: 'home-outline' },
     { id: 3, value: 200, color: '#F5A623', text: 'Transport', icon: 'car-outline' },
   ]);
+
   const [showOptions, setShowOptions] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [newExpense, setNewExpense] = useState({ text: '', value: '' });
+  const [editingExpense, setEditingExpense] = useState(null);
 
   const handleEdit = (id) => {
-    // TODO: Implement edit functionality
+    const expenseToEdit = expenses.find(expense => expense.id === id);
+    setEditingExpense(expenseToEdit);
+    setNewExpense({ text: expenseToEdit.text, value: expenseToEdit.value.toString() });
+    setShowAddModal(true);
     setShowOptions(null);
   };
 
@@ -25,29 +30,41 @@ const EditExpenses = () => {
 
   const handleAddExpense = () => {
     if (newExpense.text && newExpense.value) {
-      const newId = Math.max(...expenses.map(e => e.id)) + 1;
-      const colors = ['#4A90E2', '#50E3C2', '#F5A623', '#FF6B6B', '#9B59B6'];
-      const icons = ['fast-food-outline', 'home-outline', 'car-outline', 'shirt-outline', 'medical-outline'];
-      
-      setExpenses([...expenses, {
-        id: newId,
-        value: Number(newExpense.value),
-        color: colors[Math.floor(Math.random() * colors.length)],
-        text: newExpense.text,
-        icon: icons[Math.floor(Math.random() * icons.length)]
-      }]);
+      if (editingExpense) {
+        // Update existing expense
+        setExpenses(expenses.map(exp =>
+          exp.id === editingExpense.id
+            ? { ...exp, text: newExpense.text, value: Number(newExpense.value) }
+            : exp
+        ));
+      } else {
+        // Add new expense
+        const newId = Math.max(...expenses.map(expense => expense.id)) + 1;
+        const colors = ['#4A90E2', '#50E3C2', '#F5A623', '#FF6B6B', '#9B59B6'];
+        const icons = ['fast-food-outline', 'home-outline', 'car-outline', 'shirt-outline', 'medical-outline'];
+
+        setExpenses([...expenses, {
+          id: newId,
+          value: Number(newExpense.value),
+          color: colors[Math.floor(Math.random() * colors.length)],
+          text: newExpense.text,
+          icon: icons[Math.floor(Math.random() * icons.length)]
+        }]);
+      }
+
+      // Reset modal and state
       setNewExpense({ text: '', value: '' });
+      setEditingExpense(null);
       setShowAddModal(false);
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-
-      
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.centeredContent}>
           <Text style={styles.title}>Edit Expenses</Text>
+
           <View style={styles.chartCard}>
             <PieChart
               data={expenses}
@@ -62,17 +79,26 @@ const EditExpenses = () => {
               )}
             />
           </View>
+
           <Text style={styles.subtitle}>Expense Breakdown</Text>
+
           <View style={styles.breakdownCard}>
             {expenses.map((item, idx) => (
-              <View key={item.id} style={[styles.breakdownRow, idx === expenses.length-1 && {borderBottomWidth: 0}]}>
+              <View
+                key={item.id}
+                style={[
+                  styles.breakdownRow,
+                  idx === expenses.length - 1 && { borderBottomWidth: 0 }
+                ]}
+              >
                 <View style={styles.rowLeft}>
-                  <Icon name={item.icon} size={18} color="#222" style={{marginRight: 8}} />
+                  <Icon name={item.icon} size={18} color="#222" style={{ marginRight: 8 }} />
                   <Text style={styles.categoryText}>{item.text}</Text>
                 </View>
+
                 <View style={styles.rowRight}>
                   <Text style={styles.amountText}>${item.value.toLocaleString()}</Text>
-                  <TouchableOpacity 
+                  <TouchableOpacity
                     style={styles.optionsButton}
                     onPress={() => setShowOptions(showOptions === item.id ? null : item.id)}
                   >
@@ -82,13 +108,14 @@ const EditExpenses = () => {
               </View>
             ))}
           </View>
-          
+
           {showOptions !== null && (
             <View style={styles.optionsMenu}>
               <TouchableOpacity style={styles.optionItem} onPress={() => handleEdit(showOptions)}>
                 <Icon name="pencil" size={16} color="#666" />
                 <Text style={styles.optionText}>Edit</Text>
               </TouchableOpacity>
+
               <TouchableOpacity style={styles.optionItem} onPress={() => handleDelete(showOptions)}>
                 <Icon name="trash" size={16} color="#666" />
                 <Text style={styles.optionText}>Delete</Text>
@@ -96,9 +123,12 @@ const EditExpenses = () => {
             </View>
           )}
 
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.addButton}
-            onPress={() => setShowAddModal(true)}
+            onPress={() => {
+              setEditingExpense(null); // make sure we don't trigger "edit" accidentally
+              setShowAddModal(true);
+            }}
           >
             <Icon name="add" size={24} color="#fff" />
             <Text style={styles.addButtonText}>Add Expense</Text>
@@ -108,38 +138,50 @@ const EditExpenses = () => {
 
       <Modal
         visible={showAddModal}
-        transparent={true}
+        transparent
         animationType="fade"
         onRequestClose={() => setShowAddModal(false)}
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Add New Expense</Text>
+            <Text style={styles.modalTitle}>
+              {editingExpense ? 'Edit Expense' : 'Add New Expense'}
+            </Text>
+
             <TextInput
               style={styles.modalInput}
               placeholder="Expense Name"
               value={newExpense.text}
-              onChangeText={(text) => setNewExpense({...newExpense, text})}
+              onChangeText={(text) => setNewExpense({ ...newExpense, text })}
             />
+
             <TextInput
               style={styles.modalInput}
               placeholder="Amount"
               keyboardType="numeric"
               value={newExpense.value}
-              onChangeText={(value) => setNewExpense({...newExpense, value})}
+              onChangeText={(value) => setNewExpense({ ...newExpense, value })}
             />
+
             <View style={styles.modalButtons}>
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={[styles.modalButton, styles.cancelButton]}
-                onPress={() => setShowAddModal(false)}
+                onPress={() => {
+                  setNewExpense({ text: '', value: '' });
+                  setEditingExpense(null);
+                  setShowAddModal(false);
+                }}
               >
                 <Text style={styles.cancelButtonText}>Cancel</Text>
               </TouchableOpacity>
-              <TouchableOpacity 
+
+              <TouchableOpacity
                 style={[styles.modalButton, styles.addButton]}
                 onPress={handleAddExpense}
               >
-                <Text style={styles.addButtonText}>Add</Text>
+                <Text style={styles.addButtonText}>
+                  {editingExpense ? 'Update' : 'Add'}
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
